@@ -35,9 +35,9 @@ int main()
 
 	int outputExe_num = output_vec.size();
 
-	for (int i = 0; i < outputExe_num; i++)
+	for (int i : output_vec)
 	{
-		cout << output_vec[i] << '\n';
+		cout << i << '\n';
 	}
 
 	return 0;
