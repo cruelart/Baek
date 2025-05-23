@@ -1,89 +1,42 @@
 #include <iostream>
 #include <string>
 
+//#define Test1
+
 using namespace std;
 
 int main()
 {
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
-	
-	string croatia_word;
-	cin >> croatia_word;
+	cout.tie(nullptr);
 
-	int croatia_wordNum = 0; // 알파벳 수
+	string croatia_alphabet[8] = { "c=", "c-", "dz=", "d-", "lj", "nj", "s=", "z=" };
 
-	for (int i = 0; i < croatia_word.size(); i++)
+	string str;
+	cin >> str;
+
+	int croatia_alphabetNum = 0;
+	//int str_index = 0;
+
+	for (string _str : croatia_alphabet)
 	{
-		if (croatia_word[i] == 'c')
+		while (true)
 		{
-			if (i + 1 < croatia_word.size())
+			size_t croatia_index = str.find(_str);
+
+			if (croatia_index != string::npos)
 			{
-				if (croatia_word[i + 1] == '=' || croatia_word[i + 1] == '-')
-				{
-					croatia_wordNum++;
-					i++;
-					continue;
-				}
+				str.replace(croatia_index, _str.size(), "1");
+				continue;
+			}
+			else
+			{
+				break;
 			}
 		}
-
-		else if (croatia_word[i] == 'd')
-		{
-			if (i + 1 < croatia_word.size())
-			{
-				if (i + 2 < croatia_word.size())
-				{
-					if (croatia_word[i + 1] == 'z' && croatia_word[i + 2] == '=')
-					{
-						croatia_wordNum++;
-						i += 2;
-						continue;
-					}
-				}
-
-				if (croatia_word[i + 1] == '-')
-				{
-					croatia_wordNum++;
-					i++;
-					continue;
-				}
-			}
-		}
-
-		else if (croatia_word[i] == 'l' || croatia_word[i] == 'n')
-		{
-			if (i + 1 < croatia_word.size())
-			{
-				if (croatia_word[i + 1] == 'j')
-				{
-					croatia_wordNum++;
-					i++;
-					continue;
-				}
-			}
-		}
-
-		else if (croatia_word[i] == 's' || croatia_word[i] == 'z')
-		{
-			if (i + 1 < croatia_word.size())
-			{
-				if (croatia_word[i + 1] == '=')
-				{
-					croatia_wordNum++;
-					i++;
-					continue;
-				}
-			}
-		}
-		else
-		{
-
-		}
-
-		croatia_wordNum++;
-	
 	}
 
-	cout << croatia_wordNum;
+	cout << str.size();
+	
 }
