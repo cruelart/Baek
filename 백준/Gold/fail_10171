@@ -1,0 +1,116 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#include <vector>
+#include <deque>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
+	int result_num = 0;
+
+	int N, K; // 보석 갯수: N, 가방의 갯수 K
+	cin >> N >> K;
+	priority_queue<pair<int,int>>* pre_jewel = new priority_queue< pair<int, int>>;; // 무게와 가격을 다 담은 최초의 보석힙
+	priority_queue<int,vector<int>, greater<>> back;
+
+	//vector < priority_queue<pair<int, int>>* > jewel_ptrArray;
+
+	deque< priority_queue<pair<int, int>>*> jewel_ptrQueue;
+	
+	for (int i = 0; i < N; i++)
+	{
+		int M, V;
+		cin >> M >> V;
+		pair<int, int> jewel_v_w;
+		jewel_v_w.first = V;
+		jewel_v_w.second = M;
+
+		pre_jewel->push(jewel_v_w);
+		//jewel_ptrArray.push_back(&jewel);
+	}
+
+	jewel_ptrQueue.push_back(pre_jewel);
+
+	for (int i = 0; i < K; i++)
+	{
+		int C;
+		cin >> C;
+		back.push(C);
+	}
+
+	while (N != 0 && !back.empty())
+	{
+		priority_queue < pair<int, int>>* new_jewel;
+		new_jewel = new priority_queue< pair<int, int>>;
+		//jewel_ptrArray.push_back(new_jewel);
+		//jewel_ptrQueue.push_front(new_jewel);
+
+		//size_t jewel_ptrSize = jewel_ptrQueue.size();
+
+		for(int i =0; i<N; i++)
+		{
+			if (!jewel_ptrQueue.empty())
+			{
+				if (!jewel_ptrQueue.front()->empty())
+				{
+					//가방의 최소무게보다 최대가격 보석의 무게가 더 크다면
+					if (jewel_ptrQueue.front()->top().second <= back.top())
+					{
+						result_num += jewel_ptrQueue.front()->top().first; // 값을 더해주고
+						jewel_ptrQueue.front()->pop(); // 그 값을 빼준다
+						back.pop();
+						N -= 1; // 보석의 총 갯수를 1개 줄임;
+						if (!new_jewel->empty())
+						{
+							jewel_ptrQueue.push_front(new_jewel);
+						}
+						break;
+					}
+					else // 가방이 무게가 더 작다면
+					{
+						new_jewel->push(jewel_ptrQueue.front()->top()); // 새로운 우선순위 큐에 기존 값을 추가해주고
+						jewel_ptrQueue.front()->pop(); // 기존 top 값을 지운다.
+					}
+				}
+				else // 결국 첫번쨰 ptr 큐에서 만족하는 가방의 무게를 찾지 못했다면
+				{
+					delete jewel_ptrQueue.front();
+					jewel_ptrQueue.pop_front(); // pop시켜서 다음꺼 들여다보기 시작
+					continue;
+				}
+
+				if (i == N - 1) // 결국 가방에 맞는 보석을 찾지 못했다면
+				{
+					back.pop(); // 해당 가방을 버림
+				}
+				else
+				{
+					continue;
+				}
+				if (!new_jewel->empty())
+				{
+					jewel_ptrQueue.push_front(new_jewel);
+				}
+				else
+				{
+					delete new_jewel;
+				}
+			}
+			break;
+		}
+
+	}
+
+	while (!jewel_ptrQueue.empty()) 
+	{
+		delete jewel_ptrQueue.front();
+		jewel_ptrQueue.pop_front();
+	}
+
+	cout << result_num;
+}
