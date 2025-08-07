@@ -1,0 +1,99 @@
+#include <iostream>
+#include <stack>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+int DFS(int start_x, int start_y, vector<vector<int>>& _graph, vector<vector<bool>>& _visited)
+{
+	stack<pair<int, int>> stack_dfs; // x,y좌표를 저장하는 stack
+	stack_dfs.push(pair<int, int>(start_x, start_y)); // 시작점을 처음 푸쉬
+	int count = 0; // 단지내 아파트 갯수
+
+	while (!stack_dfs.empty())
+	{
+		pair<int, int> present_index = stack_dfs.top(); // 현재 진행중인 인덱스
+		int x = present_index.first;
+		int y = present_index.second;
+		stack_dfs.pop();
+
+		if (_visited[x][y])
+		{
+			continue;
+		}
+
+		_visited[x][y] = true;;
+		count++;
+
+		//DFS 우선순위 결정
+		if (_graph[x][y - 1] == 1 && !_visited[x][y-1]) // 맨 위가 우선순위
+		{
+			stack_dfs.push(pair<int, int>(x, y - 1));
+		}
+		if (_graph[x - 1][y] == 1 && !_visited[x - 1][y]) // 왼쪽이 두번째
+		{
+			stack_dfs.push(pair<int, int>(x - 1, y));
+		}
+		if (_graph[x + 1][y] == 1 && !_visited[x + 1][y]) // 오른쪽이 두번쨰
+		{
+			stack_dfs.push(pair<int, int>(x + 1, y));
+		}
+		if (_graph[x][y + 1] == 1 && !_visited[x][y + 1]) // 아래쪽이 세번째
+		{
+			stack_dfs.push(pair<int, int>(x, y + 1));
+		}
+	}
+
+	return count;
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+	cout.tie(nullptr);
+
+	int N; // 지도의 크기
+	cin >> N;
+
+	vector<vector<int>> graph(N+2, vector<int>(N+2,0)); // 그래프
+	vector<vector<bool>> visited(N+2, vector<bool>(N+2,false)); // 방문했는가
+
+	//그래프 입력받기
+	for (int i = 1; i < N+1; i++)
+	{
+		string str;
+		cin >> str;
+
+		for (int j = 1; j < N+1; j++)
+		{
+			graph[j][i] = str[j-1] - '0';
+		}
+	}
+
+	vector<int> dangi_num; // 각 단지별 갯수 저장
+	//int count = 0; // 아파트 단지 수에서 플러스 1
+
+	//단지수 세기
+	for (int x = 1; x < N + 1; x++)
+	{
+		for (int y = 1; y < N + 1; y++)
+		{
+			if (graph[x][y] == 1 && visited[x][y] == false) // 해당 인덱스에 집이 있다면
+			{
+				dangi_num.push_back(DFS(x, y, graph, visited)); // DFS 실행
+			}
+		}
+	}
+
+	sort(dangi_num.begin(), dangi_num.end());
+	cout << dangi_num.size() << '\n';
+	for (int i = 0; i < dangi_num.size(); i++)
+	{
+		cout << dangi_num[i] << '\n';
+	}
+
+	return 0;
+}
