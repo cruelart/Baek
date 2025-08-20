@@ -1,0 +1,30 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	string want_str = "666";
+	int count = 0;
+	int num = 0;
+
+	int N;
+	cin >> N;
+
+	while (count != N)
+	{
+		string num_str = to_string(num);
+
+		if (num_str.find(want_str) != string::npos)
+		{
+			count += 1;
+		}
+		num++;
+	}
+
+	int result = num - 1;
+
+	cout << result;
+}
