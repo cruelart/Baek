@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm> // sort를 사용할라고 넣음
+
+using namespace std;
+
+void BFS(vector<vector<int>>& _graph, vector<int>& _visit_order, int _start_index)
+{
+	int count = 0;
+	queue<int> bfs_queue;
+	bfs_queue.push(_start_index);
+	_visit_order[_start_index] = ++count;
+
+	while (!bfs_queue.empty())
+	{
+		int present_index = bfs_queue.front(); // 현재 진행되고 있는 정점인덱스 값
+		bfs_queue.pop();
+
+		for (int i = 0; i < _graph[present_index].size(); i++)
+		{
+			if (_visit_order[_graph[present_index][i]] == 0)
+			{
+				bfs_queue.push(_graph[present_index][i]);
+				_visit_order[_graph[present_index][i]] = ++count;
+			}
+		}
+	}
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
+	int N, M, R; // 정점의 수 , 간선의 수, 시작 정점
+	cin >> N >> M >> R;
+
+	vector<vector<int>> graph(N+1); // 인덱스 0번째는 사용하지 않을 것이기 때문에 N+1로 설정
+	vector<int> visit_order(N + 1, 0); // 각 정점별 순서를 저장할 벡터
+
+	//그래프 작성
+	for (int i = 0; i < M; i++)
+	{
+		int start_index, end_index;
+		cin >> start_index >> end_index;
+
+		graph[start_index].push_back(end_index);
+		graph[end_index].push_back(start_index);
+	}
+
+	for (int i = 0; i < graph.size(); i++)
+	{
+		sort(graph[i].begin(), graph[i].end(), greater<int>()); // 오름차순 정리
+	}
+
+	BFS(graph, visit_order, R);
+
+	for (int i = 1; i < N+1; i++)
+	{
+		cout << visit_order[i] << '\n';
+	}
+
+	return 0;
+}
