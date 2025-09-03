@@ -1,0 +1,93 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
+void dfs(vector<vector<int>>& _graph, vector<vector<bool>>& _isVisit, const int& x, const int& y, int& _need_insect)
+{
+	stack<pair<int, int>> dfs_stack; // x,y를 저장
+	dfs_stack.emplace(x, y);
+
+	while (!dfs_stack.empty())
+	{
+		pair<int, int> present_index = dfs_stack.top();
+		dfs_stack.pop();
+
+		int present_index_x = present_index.first;
+		int present_index_y = present_index.second;
+
+		_isVisit[present_index_x][present_index_y] = true;
+
+		if (!_isVisit[present_index_x][present_index_y - 1] && _graph[present_index_x][present_index_y - 1] == 1) // 상 좌 우 하 순으로
+		{
+			dfs_stack.emplace(present_index_x, present_index_y - 1);
+		}
+		if (!_isVisit[present_index_x - 1][present_index_y] && _graph[present_index_x - 1][present_index_y] == 1) // 좌
+		{
+			dfs_stack.emplace(present_index_x - 1, present_index_y);
+		}
+		if (!_isVisit[present_index_x + 1][present_index_y] && _graph[present_index_x + 1][present_index_y] == 1) // 우
+		{
+			dfs_stack.emplace(present_index_x + 1, present_index_y);
+		}
+		if (!_isVisit[present_index_x][present_index_y + 1] && _graph[present_index_x][present_index_y + 1] == 1) // 하
+		{
+			dfs_stack.emplace(present_index_x, present_index_y + 1);
+		}
+	}
+
+	_need_insect++;
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
+	int T;
+	cin >> T;
+
+	vector<int> result;
+
+	for (int k = 0; k < T; k++)
+	{
+		int M, N, K; // 가로길이, 세로길이, 배추의 갯수
+
+		cin >> M >> N >> K;
+
+		vector<vector<int>> graph(M + 2, vector<int>(N + 2, 0)); //우리는 1번째부터 M+1(N+1)까지 좌표만 쓸예정
+		vector<vector<bool>> isVisit(M + 2, vector<bool>(N + 2, false));
+
+		//그래프 작성 인접행렬
+		for (int i = 0; i < K; i++)
+		{
+			int x, y;
+			cin >> x >> y;
+
+			graph[x + 1][y + 1] = 1;
+		}
+
+		int need_insect = 0;
+
+		for (int i = 1; i < N + 1; i++)
+		{
+			for (int j = 1; j < M + 1; j++)
+			{
+				if (graph[j][i] == 1 && !isVisit[j][i])
+				{
+					dfs(graph, isVisit, j, i, need_insect);
+				}
+			}
+		}
+
+		result.push_back(need_insect);
+	}
+
+	for (int i = 0; i < result.size(); i++)
+	{
+		cout << result[i] << "\n";
+	}
+
+	return 0;
+}
