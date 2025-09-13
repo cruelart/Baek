@@ -8,6 +8,7 @@ bool BFS(vector<vector<int>>& _graph, vector<bool>& _isUnion1, vector<bool>& _is
 {
 	queue<int> bfs_queue;
 	bfs_queue.push(_start_index);
+	int count = _start_index;
 
 	while(!bfs_queue.empty())
 	{
@@ -45,11 +46,12 @@ bool BFS(vector<vector<int>>& _graph, vector<bool>& _isUnion1, vector<bool>& _is
 
 		if (bfs_queue.empty())
 		{
-			for (int g = 1; g < _graph.size(); g++)
+			for (int g = count; g < _graph.size(); g++)
 			{
 				if (!_isUnion1[g] && !_isUnion2[g]) // 방문한적이 없는 정점이 있다면
 				{
 					bfs_queue.push(g);
+					count = g;
 					break;
 				}
 			}
