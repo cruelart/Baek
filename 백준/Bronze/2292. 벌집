@@ -1,0 +1,22 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+int main()
+{
+	int N; 
+	cin >> N;
+
+	int dist = 1;
+	int all_roomNum = 1; // 바깥 육각형 갯수
+	int out_roomNum = 0;
+
+	for(; all_roomNum < N; all_roomNum+= out_roomNum)
+	{
+		out_roomNum += 6;
+		dist++;
+	}
+
+	cout << dist;
+}
