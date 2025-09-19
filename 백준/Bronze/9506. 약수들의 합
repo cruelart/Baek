@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	while (true)
+	{
+		int num;
+		cin >> num;
+
+		if (num == -1)
+		{
+			break;
+		}
+
+		vector<int> divisor;
+		int check_perfactNum = 0;
+
+		for (int i = 1; i < num; i++)
+		{
+			if (num % i == 0)
+			{
+				divisor.push_back(i);
+				check_perfactNum += i;
+			}
+		}
+
+		if (check_perfactNum == num)
+		{
+			cout << num << " = ";
+			for (int j = 0; j < divisor.size(); j++)
+			{
+				if (j != divisor.size() - 1)
+				{
+					cout << divisor[j] << ' ';
+					cout << '+' << ' ';
+				}
+				else
+				{
+					cout << divisor[j] << '\n';
+				}
+			}
+			continue;
+		}
+
+		cout << num << " is NOT perfect." << '\n';
+	}
+	
+}
