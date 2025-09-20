@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+int main()
+{
+	int M, N; 
+	cin >> M >> N;
+	vector<int> divisor;
+	int all_plus = 0; // 모두 더한값
+
+	for (int i = M; i <= N; i++)
+	{
+		bool isdivisor = true;
+		if (i == 1)
+		{
+			continue;
+		}
+		for (int j = 2; pow(j, 2) <= i; j++)
+		{
+			if (i % j == 0) // 소수가 아니라면
+			{
+				isdivisor = false;
+				break;
+			}
+		}
+
+		if (isdivisor)
+		{
+			divisor.push_back(i);
+		}
+
+	}
+
+	if (divisor.size() != 0)
+	{
+		for (int i = 0; i < divisor.size(); i++)
+		{
+			all_plus += divisor[i];
+		}
+
+		cout << all_plus << '\n';
+		cout << divisor[0];
+		return 0;
+	}
+
+	cout << "-1";
+
+}
