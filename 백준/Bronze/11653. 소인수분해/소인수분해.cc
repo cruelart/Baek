@@ -11,24 +11,21 @@ int main()
 
 	int N;
 	cin >> N;
-	vector<int> divisor; // 약수 / 소수-> prime number 
 
 	if (N != 1)
 	{
-		for (int i = 2; i <= N; i++)
+		for(int i = 2; pow(i,2) <= N; i++)
 		{
-			if (N % i == 0)
+			while (N % i == 0)
 			{
 				N /= i;
-				divisor.push_back(i);
-				i = 1;
+				cout << i <<'\n';
 			}
 		}
 
-
-		for (int j = 0; j < divisor.size(); j++)
+		if (N > 1) // N값이 소수라면
 		{
-			cout << divisor[j] << '\n';
+			cout << N;
 		}
 	}
 }
