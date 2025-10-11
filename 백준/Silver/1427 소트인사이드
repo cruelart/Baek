@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+#include <ctime>
+#include <cstdlib>
+
+using namespace std;
+
+void QuickSort(vector<int>& _arr, int _start_index, int _end_index)
+{
+	if (_start_index >= _end_index) return;
+
+	int random_index = _start_index + (rand() % (_end_index - _start_index + 1));
+	int pivot = _arr[random_index]; // 피봇을 랜덤으로 받아옴
+	int will_changeIndex = _start_index;
+
+	swap(_arr[random_index], _arr[_end_index]); // 피봇을 배열의 마지막 원소로 보내버림
+
+	for (int a = _start_index; a < _end_index; a++)
+	{
+		if (_arr[a] > pivot)
+		{
+			swap(_arr[a], _arr[will_changeIndex]);
+			will_changeIndex++;
+		}
+		else{}
+	}
+
+	swap(_arr[will_changeIndex], _arr[_end_index]);
+
+	if (_start_index < _end_index)
+	{
+		QuickSort(_arr, _start_index, will_changeIndex - 1); // 피봇 왼쪽 정렬
+		QuickSort(_arr, will_changeIndex + 1, _end_index); // 피봇 오른쪽 정렬
+	}
+}
+
+int main()
+{
+	srand(time(NULL));
+
+	string str;
+	cin >> str;
+
+	vector<int> arr;
+
+	for (int s = 0; s < str.length(); s++)
+	{
+		arr.push_back(str[s] - '0');
+	}
+
+	QuickSort(arr, 0, arr.size() - 1);
+
+	for (int a = 0; a < arr.size(); a++)
+	{
+		cout << arr[a];
+	}
+}
