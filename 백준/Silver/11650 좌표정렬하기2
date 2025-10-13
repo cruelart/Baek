@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+void QuickSort(vector<pair<int,int>>& _arr, int _start_index, int _end_index)
+{
+	if (_start_index >= _end_index) // 종료
+	{
+		return;
+	}
+
+	int random = _start_index + (rand() % (_end_index - _start_index + 1));
+	pair<int,int> pivot = _arr[random];
+
+	swap(_arr[random], _arr[_end_index]); // 피봇을 마지막으로 보냄
+
+	int will_change = _start_index;
+
+	//정렬하기
+	for (int i = _start_index; i < _end_index; i++)
+	{
+		if (_arr[i].second < pivot.second) // y좌표비교
+		{
+			swap(_arr[i], _arr[will_change]);
+			will_change++;
+		}
+		else if (_arr[i].second == pivot.second) // y좌표가 같다면 x좌표끼리 비교
+		{
+			if (_arr[i].first < pivot.first)
+			{
+				swap(_arr[i], _arr[will_change]);
+				will_change++;
+			}
+		}
+	}
+
+	swap(_arr[_end_index], _arr[will_change]);
+
+	QuickSort(_arr, _start_index, will_change - 1);
+	QuickSort(_arr, will_change + 1, _end_index);
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+	cout.tie(nullptr);
+
+	srand(time(NULL));
+
+	int N; // 총 점의 갯수
+	cin >> N;
+
+	vector<pair<int, int>> arr; // 좌표저장 배열
+
+	//좌표 입력
+	for (int n = 0; n < N; n++)
+	{
+		pair<int, int> xy_location;
+		cin >> xy_location.first >> xy_location.second;
+
+		arr.push_back(xy_location);
+	}
+
+	QuickSort(arr, 0, arr.size() - 1);
+
+	for (int a = 0; a < arr.size(); a++)
+	{
+		cout << arr[a].first << ' ' << arr[a].second << '\n';
+	}
+
+	return 0;
+}
