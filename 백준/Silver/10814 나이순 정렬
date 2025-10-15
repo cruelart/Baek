@@ -1,0 +1,77 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void merge(vector<pair<int, string>>& _consumer, int _start, int _end, int _mid)
+{
+	int i = _start;
+	int j = _mid + 1;
+
+	vector<pair<int, string>> save_arr; // 임시 저장소
+
+	while (i <= _mid && j <= _end)
+	{
+		if (_consumer[i].first <= _consumer[j].first)
+		{
+			save_arr.push_back(_consumer[i++]);
+		}
+		else
+		{
+			save_arr.push_back(_consumer[j++]);
+		}
+	}
+
+	while (i <= _mid) // 왼쪽부터 비어있다면 넣어줌
+	{
+		save_arr.push_back(_consumer[i++]);
+	}
+	while (j <= _end) // 오른쪽 마저 안들어간거 넣어주기
+	{
+		save_arr.push_back(_consumer[j++]);
+	}
+
+	for (int i = _start; i <= _end; i++) // 임시저장소에서 기존 배열로 옮기기
+	{
+		_consumer[i] = save_arr[i - _start];
+	}
+}
+
+void mergeSort(vector<pair<int, string>>& _consumer,int _start ,int _end)
+{
+	if (_end - _start <= 0) // 원소가 1개이하로 남는가면 return
+	{
+		return;
+	}
+
+	int mid = (_start + _end) / 2; // 중간값
+	
+	mergeSort(_consumer, _start, mid); // 왼쪽 분할
+	mergeSort(_consumer, mid + 1 , _end); // 오른쪽 분할
+	merge(_consumer, _start, _end, mid);
+}
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<pair<int, string>> consumer(N);
+
+	for (int n = 0; n < N; n++)
+	{
+		pair<int, string> old_name;
+		cin >> old_name.first >> old_name.second;
+
+		consumer[n] = old_name;
+	}
+
+	mergeSort(consumer, 0, consumer.size()-1);
+
+	for (int i = 0; i < N; i++)
+	{
+		cout << consumer[i].first << ' ' << consumer[i].second << '\n';
+	}
+
+	return 0;
+}
