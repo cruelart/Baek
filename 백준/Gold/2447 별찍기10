@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void paint(vector<vector<char>>& _result, int _N, int _x, int _y)
+{
+	if (_N == 1)
+	{
+		return;
+	}
+	//common_shape write
+
+	_result[_x][_y] = '*';
+	_result[_x + 1][_y] = '*';
+	_result[_x + 2][_y] = '*';
+
+	_result[_x][_y + 1] = '*';
+	_result[_x + 1][_y + 1] = ' ';
+	_result[_x + 2][_y + 1] = '*';
+
+	_result[_x][_y + 2] = '*';
+	_result[_x + 1][_y + 2] = '*';
+	_result[_x + 2][_y + 2] = '*';
+
+	_N /= 3;
+
+	paint(_result, _N, _x + _N * 0, _y + _N * 0);
+	paint(_result, _N, _x + _N * 1, _y + _N * 0);
+	paint(_result, _N, _x + _N * 2, _y + _N * 0);
+
+	paint(_result, _N, _x + _N * 0, _y + _N * 1);
+	//paint(_result, _N, _x + _N * 1, _y + _N * 1); -> 공백으로 채우기
+	for (int i = (_x + _N * 1); i < (_x + _N * 1 * 2); i++)
+	{
+		for (int j = (_y + _N * 1); j < (_y + (_N * 1 * 2)); j++)
+		{
+			_result[j][i] = ' ';
+		}
+	}
+	paint(_result, _N, _x + _N * 2, _y + _N * 1);
+
+	paint(_result, _N, _x + _N * 0, _y + _N * 2);
+	paint(_result, _N, _x + _N * 1, _y + _N * 2);
+	paint(_result, _N, _x + _N * 2, _y + _N * 2);
+
+}
+
+int main()
+{
+	int N; // N >= 3
+	cin >> N;
+	
+	vector<vector<char>> result(N, vector<char>(N));
+
+	paint(result, N, 0, 0);
+
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			cout << result[j][i];
+		}
+		cout << '\n';
+	}
+	return 0;
+}
