@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <unordered_map>
+
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<long long> arr(N);
+
+	for (int n = 0; n < N; n++)
+	{
+		long long num;
+		cin >> num;
+
+		arr[n] = num;
+	}
+
+	vector<long long> new_arr = arr;
+
+	sort(new_arr.begin(), new_arr.end());
+
+	new_arr.erase(unique(new_arr.begin(), new_arr.end()), new_arr.end());
+
+	unordered_map<long long, int> myMap;
+	for (int i = 0; i < new_arr.size(); i++)
+	{
+		myMap[new_arr[i]] = i;
+	}
+
+	for (int j = 0; j < arr.size(); j++)
+	{
+		cout << myMap[arr[j]] << ' ';
+	}
+
+
+	return 0;
+}
