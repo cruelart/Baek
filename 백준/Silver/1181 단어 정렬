@@ -1,0 +1,110 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void merge(vector<string>& _arr, int _start, int _end, int _middle)
+{
+	vector<string> save_arr; // 임시 저장 공간
+
+	int i = _start;
+	int j = _middle + 1;
+	while (i <= _middle && j <= _end)
+	{
+		if (_arr[i].length() < _arr[j].length())
+		{
+			save_arr.push_back(_arr[i++]);
+		}
+		else if (_arr[i].length() == _arr[j].length())
+		{
+			for (int k = 0; k < _arr[i].length(); k++)
+			{
+				if (_arr[i][k] < _arr[j][k])
+				{
+					save_arr.push_back(_arr[i++]);
+					break;
+				}
+				else if (_arr[i][k] == _arr[j][k])
+				{
+					if (k == _arr[i].length() - 1)
+					{
+						save_arr.push_back(_arr[i++]);
+						//j++;
+					}
+					continue;
+				}
+				else
+				{
+					save_arr.push_back(_arr[j++]);
+					break;
+				}
+			}
+		}
+		else
+		{
+			save_arr.push_back(_arr[j++]);
+		}
+	}
+
+	while (i <= _middle) // 왼쪽 집합이 먼저 다 들어가서 오른쪽이 임시 저장공간에 못 들어간 경우
+	{
+		save_arr.push_back(_arr[i++]);
+	}
+
+	while (j <= _end)
+	{
+		save_arr.push_back(_arr[j++]);
+	}
+
+	for (int i = _start; i <= _end; i++)
+	{
+		_arr[i] = save_arr[i - _start];
+	}
+}
+
+void MergeSort(vector<string>& _arr, int _start, int _end)
+{
+	if (_end - _start <= 0) // 원소가 1개 이하면 리턴
+	{
+		return;
+	}
+
+	int middle = (_end + _start) / 2; // 중간 위치
+
+	MergeSort(_arr, _start, middle); // 왼쪽
+	MergeSort(_arr, middle + 1, _end); // 오른쪽
+	merge(_arr, _start, _end, middle);
+}
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<string> arr(N);
+	
+	for (int n = 0; n < N; n++)
+	{
+		string str;
+		cin >> str;
+
+		arr[n] = str;
+	}
+
+	MergeSort(arr, 0, arr.size() - 1);
+
+	for (int i = 0; i < N; i++)
+	{
+		if (i == 0)
+		{
+			cout << arr[i] << '\n';
+		}
+		
+		if (i > 0 && arr[i-1] != arr[i])
+		{
+			cout << arr[i] << '\n';
+		}
+	}
+
+	return 0;
+}
