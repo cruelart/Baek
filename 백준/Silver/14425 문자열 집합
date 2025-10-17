@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+int main()
+{
+	int N, M;
+	cin >> N >> M;
+
+	int count = 0;
+
+	unordered_map<string, bool> map;
+
+	for (int n = 0; n < N; n++)
+	{
+		string str;
+		cin >> str;
+
+		map.insert({ str, true });
+	}
+
+	for (int m = 0; m < M; m++)
+	{
+		string str;
+		cin >> str;
+
+		if (map.find(str) != map.end())
+		{
+			count++;
+		}
+	}
+
+	cout << count;
+
+	return 0;
+}
