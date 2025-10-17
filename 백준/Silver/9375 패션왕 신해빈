@@ -1,0 +1,49 @@
+#include <iostream>
+#include <unordered_map>
+
+using namespace std;
+
+int main()
+{
+	int test_case;
+	cin >> test_case;
+
+	for (int t = 0; t < test_case; t++)
+	{
+		int n;
+		cin >> n;
+
+		int result = 1;
+
+		unordered_map<string, int> my_map;
+
+		for (int i = 0; i < n; i++)
+		{
+			pair<string, string> str;
+			cin >> str.first >> str.second;
+
+			if (my_map.find(str.second) == my_map.end()) // 존재하지 않은 종류라면
+			{
+				my_map.insert({ str.second, 1 });
+			}
+			else // 이미 존재했던 종류면
+			{
+				my_map[str.second]++; // 하나 증가시켜줌
+			}
+		}
+
+		for (auto p : my_map)
+		{
+			result *= (p.second + 1);
+		}
+
+		cout << result - 1 << '\n';
+	}
+
+	return 0;
+}
+
+// 모자 : a b c d e (5)
+// 상의 : a1 b1 c1 (3)
+// 하의 : a2 b2 c2 (3)
+// 안경 : a3 b3 c3 (3) == > 14개
