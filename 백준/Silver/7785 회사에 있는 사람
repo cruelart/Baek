@@ -1,0 +1,38 @@
+#include <iostream>
+#include <map>
+
+using namespace std;
+
+int main()
+{
+	int n;
+	cin >> n;
+
+	map<string, string, greater<string>> my_map;
+	
+	for (int i = 0; i < n; i++)
+	{
+		pair<string, string> str;
+		cin >> str.first >> str.second;
+
+		if (str.second == "leave")
+		{
+			if (my_map.find(str.first) != my_map.end())
+			{
+				my_map.erase(str.first);
+			}
+		}
+		else if (str.second == "enter")
+		{
+			my_map.insert(str);
+		}
+		else {}
+	}
+
+	for (pair<string, string> p : my_map)
+	{
+		cout << p.first << '\n';
+	}
+
+	return 0;
+}
