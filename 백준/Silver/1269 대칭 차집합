@@ -1,0 +1,48 @@
+#include <iostream>
+#include <unordered_set>
+
+using namespace std;
+
+int main()
+{
+	int A_num, B_num;
+	cin >> A_num >> B_num;
+
+	unordered_set<int> s_a;
+	unordered_set<int> s_b;
+
+	int result = 0;
+
+	for (int a = 0; a < A_num; a++)
+	{
+		int num;
+		cin >> num;
+
+		s_a.insert(num);
+	}
+
+	for (int b = 0; b < B_num; b++)
+	{
+		int num;
+		cin >> num;
+
+		s_b.insert(num);
+
+		if (s_a.find(num) == s_a.end()) // B-A구한거
+		{
+			result += 1;
+		}
+	}
+
+	for (auto p : s_a)
+	{
+		if (s_b.find(p) == s_b.end())
+		{
+			result += 1;
+		}
+	}
+
+	cout << result;
+
+	return 0;
+}
