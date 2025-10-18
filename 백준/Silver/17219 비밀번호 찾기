@@ -1,0 +1,36 @@
+#include <iostream>
+#include <unordered_map>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
+	int M, N; // 저장된 사이트 주소의 수, 비밀번호를 찾으려는 사이트 주소의 수
+	cin >> M >> N;
+
+	unordered_map<string, string> site_password; //  각각 사이트주소와 비밀번호 저장
+
+	for (int m = 0; m < M; m++)
+	{
+		pair<string, string> str;
+		cin >> str.first >> str.second;
+
+		site_password.insert(str);
+	}
+
+	for (int n = 0; n < N; n++)
+	{
+		string str;
+		cin >> str;
+
+		if (site_password.find(str) != site_password.end())
+		{
+			cout << site_password[str] << '\n';
+		}
+	}
+
+	return 0;
+}
