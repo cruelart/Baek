@@ -1,0 +1,62 @@
+#include <iostream>
+#include <map>
+
+using namespace std;
+
+int main()
+{
+	int N; // 팔린 갯수
+	cin >> N;
+
+	map<string, int> sell_book;
+	pair<string, int> max = { " ", 0 };
+
+	for (int n = 0; n < N; n++)
+	{
+		string str;
+		cin >> str;
+
+		if (sell_book.find(str) == sell_book.end())
+		{
+			sell_book.insert({ str,1 });
+			if (max.second < 1)
+			{
+				max = { str, 1 };
+			}
+
+			if (max.second == sell_book[str]) // 둘다 많이 팔린 상황이라면
+			{
+				if (max.first > str) // 문자열의 길이가 더 작아야지만 max로 갈 수 있음
+				{
+					max = { str, sell_book[str] };
+				}
+			}
+			else if (max.second < sell_book[str])
+			{
+				max = { str, sell_book[str] };
+			}
+			else {}
+		}
+		else
+		{
+			sell_book[str]++;
+
+			if (max.second == sell_book[str]) // 둘다 많이 팔린 상황이라면
+			{
+				if (max.first > str) // 문자열의 길이가 더 작아야지만 max로 갈 수 있음
+				{
+					max = { str, sell_book[str] };
+				}
+			}
+			else if (max.second < sell_book[str])
+			{
+				max = { str, sell_book[str]};
+			}
+			else{}
+		}
+	}
+
+	cout << max.first;
+
+	return 0;
+}
