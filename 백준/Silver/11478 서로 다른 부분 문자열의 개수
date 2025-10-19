@@ -1,0 +1,32 @@
+#include <iostream>
+#include <unordered_map>
+#include <unordered_set>
+
+using namespace std;
+
+int main()
+{
+	string S;
+	cin >> S;
+
+	unordered_set<string> my_set;
+
+	int result = 1;
+
+	for (int i = 1; i <= S.size(); i++)
+	{
+		for (int j = 0; j <= S.size() - i; j++)
+		{
+			string str = S.substr(j, i);
+			my_set.insert(str);
+		}
+	}
+
+	cout << my_set.size();
+
+	return 0;
+}
+
+// 00
+// aa
+// bb
