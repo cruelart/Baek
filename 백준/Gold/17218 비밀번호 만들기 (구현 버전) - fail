@@ -1,0 +1,65 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
+	string str1;
+	cin >> str1;
+
+	string str2;
+	cin >> str2;
+
+	int i = 0;
+	int j = 0;
+	int save_j = 0;
+
+	string str;
+	str.reserve(str1.size());
+
+	pair<string, int> max = { " ",0};
+
+	for (int k = 0; k < str1.size(); k++)
+	{
+		i = k;
+		j = 0;
+
+		for (; i < str1.size();)
+		{
+			for (; j < str2.size();)
+			{
+				if (str1[i] == str2[j]) // 두 문자가 같다면
+				{
+					str.push_back(str1[i]); // str에 넣어주고
+					save_j = j + 1; // 그 위치를 기억해놓고
+					i++; // str1의 다음 문자로 넘어가기 위해
+					break; // break
+				}
+				j++; // 같지않다면 str2의 다음 문자로 ㄱㄱ
+
+				if (j == str2.size() - 1) // str2의 마지막 문자를 비교했지만 같지 않은경우
+				{
+					i++; // str1의 다음문자로 넘어가고
+					j = save_j; // 저장한 j의 값을 받아옴 (연속된 문자를 비교할 것이므로 그 전에 비교했던 것들은 필요없으므로)
+					break;
+				}
+			}
+
+			if (save_j == str2.size()) // 이미 str2의 모든 것을 비교해봤다면 더이상 str1과 비교가 불가하므로 break을 걸어 반복문 종료
+			{
+				break;
+			}
+		}
+		if (max.second < str.size())
+		{
+			max.second = str.size();
+			max.first = str;
+		}
+		str.clear();
+	}
+
+	cout << max.first;
+}
