@@ -1,46 +1,30 @@
 #include <iostream>
 #include <unordered_map>
-
 using namespace std;
 
 int main()
 {
-	int N;
-	cin >> N;
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
-	unordered_map<long long, int> my_map;
-	pair<long long, int> max = { 0,-1 };
+    int N;
+    cin >> N;
 
-	for (int n = 0; n < N; n++)
-	{
-		long long num;
-		cin >> num;
+    unordered_map<long long, int> freq;
+    pair<long long, int> max_pair = {0, -1};
 
-		if (my_map.find(num) == my_map.end()) // 없던 거라면
-		{
-			my_map.insert({ num,1 });
-		}
-		else // 이미 존재한다면
-		{
-			my_map[num]++;
-		}
+    for (int i = 0; i < N; i++)
+    {
+        long long num;
+        cin >> num;
 
-		if (max.second < my_map[num])
-		{
-			max = { num, my_map[num] };
-		}
-		else if (max.second == my_map[num]) // 가장 많이 가지고 있는 정수가 여러가지면 ,작은 것을 출력
-		{
-			if (max.first > num)
-			{
-				max = { num, my_map[num] };
-			}
-		}
+        int cnt = ++freq[num];
 
-		else {}
-	}
+        if (cnt > max_pair.second)
+            max_pair = {num, cnt};
+        else if (cnt == max_pair.second && num < max_pair.first)
+            max_pair.first = num;
+    }
 
-	cout << max.first;
-
-	return 0;
+    cout << max_pair.first;
 }
