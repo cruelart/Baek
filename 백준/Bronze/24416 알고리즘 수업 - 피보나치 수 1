@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int count1 = 0;
+int count2 = 0;
+
+int reculsion_fib(int n)
+{
+	if (n == 1 || n == 2)
+	{
+		count1++;
+		return 1;
+	}
+	else
+	{
+		return (reculsion_fib(n - 1) + reculsion_fib(n - 2));
+	}
+}
+
+int dynamic_programing_fib(int n)
+{
+	vector<int> list(n);
+
+	if (n == 0 || n == 1)
+	{
+		list[n] = 1;
+	}
+
+	for (int i = 2; i < n; i++)
+	{
+		list[i] = list[i - 1] + list[i - 2];
+		count2++;
+	}
+
+	return list[n - 1];
+}
+
+int main()
+{
+	int n;
+	cin >> n;
+	
+	reculsion_fib(n);
+	dynamic_programing_fib(n);
+
+	cout << count1 << ' ' << count2;
+
+	return 0;
+}
