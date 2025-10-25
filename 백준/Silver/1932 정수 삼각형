@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
+	int n;
+	cin >> n;
+
+	vector<vector<int>> triangle(n, vector<int>(n, 0));
+	vector<vector<int>> dp_table(n, vector<int>(n, 0));
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j <= i; j++)
+		{
+			int num;
+			cin >> num;
+
+			triangle[i][j] = num;
+		}
+	}
+
+	dp_table[0][0] = triangle[0][0];
+
+	for (int d = 1; d < n; d++) // 해당 층
+	{
+		for (int k = 0; k <= d; k++) // 해당 층에 있는 번호
+		{
+			if (k == 0)
+			{
+				dp_table[d][k] = dp_table[d - 1][k] + triangle[d][k]; // 왼쪽 끝
+			}
+			else if (k == d)
+			{
+				dp_table[d][k] = dp_table[d - 1][k - 1] + triangle[d][k]; // 오른쪽 끝
+			}
+			else
+			{
+				dp_table[d][k] = max(dp_table[d - 1][k - 1], dp_table[d - 1][k]) + triangle[d][k]; // 중간
+			}
+
+		}
+	}
+
+	cout << *max_element(dp_table[n - 1].begin(), dp_table[n - 1].end()) << '\n';
+
+	//dp_table[1][0] = dp_table[0][0] + triangle[1][0]
+	//dp_table[1][1] = dp_table[0][0] + triangle[1][1]
+
+	//da_table[2][0] = dp_table[1][0] + triangle[2][0]
+	//da_table[2][1] = dp_table[1][0] + triangle[2][1]
+	//da_table[2][2] = dp_table[1][1] + triangle[2][2]
+
+	//dp_table[d][k] = dp_table[d-1][k]
+	return 0;
+}
