@@ -1,0 +1,30 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	int n;
+	cin >> n;
+
+	vector<int> num_arr(n);
+
+	for (int i = 0; i < n; i++)
+	{
+		cin >> num_arr[i];
+	}
+
+	vector<int> dp_table(n);
+	dp_table[0] = num_arr[0];
+
+	for (int i = 1; i < n; i++)
+	{
+		dp_table[i] = max(dp_table[i - 1] + num_arr[i], num_arr[i]);
+	}
+
+	cout << *max_element(dp_table.begin(), dp_table.end());
+
+	return 0;
+}
