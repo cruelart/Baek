@@ -1,0 +1,46 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
+	int N, M; // 포켓몬의 갯수, 맞춰야 하는 문제의 개수
+	cin >> N >> M;
+
+	unordered_map<string, int> int_map;
+	unordered_map<string, string> string_map;
+
+	for (int n = 1; n <= N; n++)
+	{
+		string str;
+		cin >> str;
+
+		int_map.insert({ str, n });
+		string_map.insert({ to_string(n),str });
+	}
+
+	for (int m = 1; m <= M; m++)
+	{
+		string str;
+		cin >> str;
+
+		if (string_map.find(str) != string_map.end())
+		{
+			cout << string_map[str] << '\n';
+			continue;
+		}
+
+		if (int_map.find(str) != int_map.end())
+		{
+			cout << int_map[str] << '\n';
+			continue;
+		}
+	}
+
+	return 0;
+}
