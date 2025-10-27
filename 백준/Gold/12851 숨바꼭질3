@@ -7,7 +7,8 @@ using namespace std;
 
 int dijkstra(int _N, int _K)
 {
-	vector<bool> isVisit(100001, false);
+	vector<bool> isVisit(500001, false);
+	int past_value = 0;
 
 	priority_queue<pair<int,int>, vector<pair<int,int>>, greater<>> dij_queue; // 거리, 인덱스번호
 	dij_queue.push({ 0,_N });
@@ -17,28 +18,33 @@ int dijkstra(int _N, int _K)
 		int present_index = dij_queue.top().second;
 		int present_value = dij_queue.top().first;
 
-		if (isVisit[present_index])
-		{
-			continue;
-		}
-		isVisit[present_index] = true;
-
 		dij_queue.pop();
+
+		if (present_value != past_value )
+		{
+			if (_K + present_value > 500000)
+			{
+				break;
+			}
+			past_value = present_value;
+			_K += present_value;
+		}
 
 		if (present_index != _K) // 수빈이가 온 곳이 동생이 있는 곳이 아니라면
 		{
-			if (present_index - 1 >= 0)
+			if (present_index - 1 >= 0 && !isVisit[present_index - 1])
 			{
 				dij_queue.push({ present_value + 1, present_index - 1 });
 			}
-			if (present_index + 1 <= 100000)
+			if (present_index + 1 <= 500000 && !isVisit[present_index + 1])
 			{
 				dij_queue.push({ present_value + 1 , present_index + 1 });
 			}
-			if (present_index * 2 <= 100000)
+			if (present_index * 2 <= 500000 && !isVisit[present_index * 2])
 			{
-				dij_queue.push({ present_value + 0 ,present_index * 2 });
+				dij_queue.push({ present_value + 1 ,present_index * 2 });
 			}
+			
 			continue;
 		}
 		return present_value;
