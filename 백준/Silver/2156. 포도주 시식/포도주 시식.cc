@@ -35,7 +35,6 @@ int main()
 	{
 		dp_table[i][1] = max(dp_table[i - 2][2] + vec[i], dp_table[i][1]); // 떨어져있는 것으로부터 다시 1번세는경우
 		dp_table[i][1] = max(dp_table[i - 2][1] + vec[i], dp_table[i][1]); // 1번밖에 세지않았지만 나중을 위해 안 세놓은 경우
-		dp_table[i][1] = max(dp_table[i - 3][1] + vec[i], dp_table[i][1]); // 1번밖에 세지않았지만 나중을 위해 안 세놓은 경우
 		dp_table[i][1] = max(dp_table[i - 3][2] + vec[i], dp_table[i][1]); // 1번밖에 세지않았지만 나중을 위해 안 세놓은 경우
 
 		dp_table[i][2] = max(dp_table[i - 1][1] + vec[i], dp_table[i][2]); // 연속일 경우
@@ -45,3 +44,5 @@ int main()
 
 	return 0;
 }
+
+//12 9 13 50 33 42 123 84
