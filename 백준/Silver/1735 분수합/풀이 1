@@ -1,0 +1,90 @@
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <map>
+
+using namespace std;
+
+int main()
+{
+	pair<int, int> A1B1;
+	cin >> A1B1.first >> A1B1.second;
+
+	pair<int, int> A2B2;
+	cin >> A2B2.first >> A2B2.second;
+
+	pair<int, int> new_AB; // A가 분자 B가 분모
+	new_AB.second = A1B1.second * A2B2.second; // 분모
+	new_AB.first = A1B1.first * A2B2.second + A2B2.first * A1B1.second; // 분자
+
+	map<int, int> A_map;
+	map<int, int> B_map;
+
+	for (int i = 2; pow(i, 2) <= new_AB.first; i++) // 분자 소인수 분해
+	{
+		while (new_AB.first % i == 0)
+		{
+			new_AB.first /= i;
+			A_map[i]++;
+		}
+	}
+
+	if (new_AB.first > 1)
+	{
+		A_map[new_AB.first]++;
+	}
+
+	for (int i = 2; pow(i, 2) <= new_AB.second; i++) // 분모 소인수 분해
+	{
+		while (new_AB.second % i == 0)
+		{
+			new_AB.second /= i;
+			B_map[i]++;
+		}
+	}
+
+	if (new_AB.second > 1)
+	{
+		B_map[new_AB.second]++;
+	}
+
+	for (auto p : A_map)
+	{
+		if (B_map.find(p.first) != B_map.end()) // 공통 인수가 존재하면
+		{
+			if (A_map[p.first] - B_map[p.first] > 0)
+			{
+				A_map[p.first] -= B_map[p.first];
+				B_map[p.first] = 0;
+			}
+			else
+			{
+				B_map[p.first] -= A_map[p.first];
+				A_map[p.first] = 0;
+			}
+		}
+	}
+
+	int A = 1;
+
+	for (auto p : A_map)
+	{
+		if (p.second != 0)
+		{
+			A = A * pow(p.first , p.second);
+		}
+	}
+
+	int B = 1;
+	for (auto p : B_map)
+	{
+		if (p.second != 0)
+		{
+			B = B * pow(p.first , p.second);
+		}
+	}
+
+	cout << A << ' ' << B;
+
+	return 0;
+}
