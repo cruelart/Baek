@@ -201,7 +201,5 @@ int main()
 			}
 		}
 	}
-
-	cout << "또 버그야ㅅㅍ";
 	return 0;
 }
