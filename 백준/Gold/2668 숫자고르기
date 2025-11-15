@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<int> save_num(N + 1);
+
+	// 입력받은 값 저장
+	for (int x = 1; x <= N; x++)
+	{
+		cin >> save_num[x];
+	}
+
+	vector<int> result;
+
+	for (int i = 1; i <= N; i++)
+	{
+		int num = save_num[i];
+		for(int k = 1; k <= N; k++)
+		{
+			if (num == i)
+			{
+				result.push_back(i);
+				break;
+			}
+			num = save_num[num];
+		}
+	}
+
+
+	cout << result.size() << '\n';
+
+	for (int i = 0; i < result.size(); i++)
+	{
+		cout << result[i] << '\n';
+	}
+
+	return 0;
+}
