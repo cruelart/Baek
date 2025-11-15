@@ -1,0 +1,91 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	int n;
+	cin >> n;
+
+	vector<vector<char>> minorMap(n, vector<char>(n)); // 숨겨진 지뢰를 저장한 맵
+	vector<vector<char>> find_minorMap(n, vector<char>(n)); // 현재 상태를 저장한 맵
+	vector<vector<char>> cout_minorMap(n, vector<char>(n, '.')); // 출력용 지뢰맵
+
+	for (int y = 0; y < n; y++)
+	{
+		for (int x = 0; x < n; x++)
+		{
+			cin >> minorMap[y][x];
+		}
+	}
+
+	for (int y = 0; y < n; y++)
+	{
+		for (int x = 0; x < n; x++)
+		{
+			cin >> find_minorMap[y][x];
+		}
+	}
+
+	int k[8] = {-1,-1,-1,0,0,1,1,1};
+	int q[8] = {-1,0,1,1,-1,1,0,-1};
+
+	bool isFindMinor = false; // 지뢰를 발견한 상태라면
+
+	for (int y = 0; y < n; y++)
+	{
+		for (int x = 0; x < n; x++)
+		{
+			if (minorMap[y][x] == '*' && !isFindMinor && find_minorMap[y][x] == 'x')
+			{
+				isFindMinor = true;
+			}
+
+			int count = 0;
+			for (int check = 0; check < 8; check++)
+			{
+				if (find_minorMap[y][x] == 'x') // 현재 눌러져 잇는 상태이고
+				{
+					if (y + k[check] < n && x + q[check] < n && y + k[check] >= 0 && x + q[check] >= 0)
+					{
+						if (minorMap[y + k[check]][x + q[check]] == '*')
+						{
+							count++;
+						}
+					}
+				}
+			}
+			if (find_minorMap[y][x] == 'x')
+			{
+				cout_minorMap[y][x] = count + '0';
+			}
+		}
+	}
+
+	if (isFindMinor)
+	{
+		for (int y = 0; y < n; y++)
+		{
+			for (int x = 0; x < n; x++)
+			{
+				if (minorMap[y][x] == '*')
+				{
+					cout_minorMap[y][x] = '*';
+				}
+			}
+		}
+	}
+
+	for (int y = 0; y < n; y++)
+	{
+		for (int x = 0; x < n; x++)
+		{
+			cout << cout_minorMap[y][x];
+		}
+		cout << '\n';
+	}
+
+
+	return 0;
+}
