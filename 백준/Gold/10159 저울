@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+int bfs(vector<vector<pair<int, char>>>& _graph, int _start_index)
+{
+	int count = 0;
+	int isVisitSize = _graph.size();
+	vector<bool> isVisit(isVisitSize, false);
+
+	queue<pair<int, int>> bfs_queue;
+	bfs_queue.push({ _start_index, '<' });
+	bfs_queue.push({ _start_index, '>' });
+	isVisit[_start_index] = true;
+
+	while (!bfs_queue.empty())
+	{
+		int present_index = bfs_queue.front().first;
+		char present_indexOperation = bfs_queue.front().second;
+		bfs_queue.pop();
+
+		for (int index = 0; index < _graph[present_index].size(); index++)
+		{
+			int next_index = _graph[present_index][index].first; // 다음 인덱스
+			char operation = _graph[present_index][index].second; // 부호
+
+			if (!isVisit[next_index] && present_indexOperation == operation)
+			{
+				bfs_queue.push({ next_index,operation });
+				isVisit[next_index] = true;
+				count++;
+			}
+		}
+	}
+
+	return count;
+}
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	int M;
+	cin >> M;
+
+	vector<vector<pair<int,char>>> graph(N + 1); // 숫자, 부호
+
+	for (int m = 0; m < M; m++)
+	{
+		int light, heavy;
+		cin >> light >> heavy;
+		graph[light].push_back({ heavy, '<' });
+		graph[heavy].push_back({ light,'>' });
+	}
+
+	for (int n = 1; n <= N; n++)
+	{
+		cout << (N -1) - bfs(graph, n) << '\n';
+	}
+
+
+	return 0;
+}
