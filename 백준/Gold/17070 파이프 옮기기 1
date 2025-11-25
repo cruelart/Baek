@@ -1,0 +1,108 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <tuple>
+
+using namespace std;
+
+int bfs(vector<vector<int>>& _graph, tuple<int,int,char> _start_index)
+{
+	queue<tuple<int,int,char>> bfs_queue; // 인덱스 y,x / 방향성
+	bfs_queue.push(_start_index);
+	int count = 0;
+
+	while (!bfs_queue.empty())
+	{
+		tuple<int, int, char> present = bfs_queue.front();
+		bfs_queue.pop();
+
+		pair<int, int> present_index = { get<1>(present), get<0>(present) }; // x, y 순으로 교체
+		char dir = get<2>(present);
+
+		if (present_index.first == _graph.size() - 1 && present_index.second == _graph.size() - 1)
+		{
+			count++;
+			continue;
+		}
+
+		switch (dir)
+		{
+		case '-':
+			//가로방향
+			if (present_index.first + 1 < _graph.size() && _graph[present_index.second][present_index.first + 1] == 0)
+			{
+				bfs_queue.push({ present_index.second ,present_index.first + 1, '-' });
+			}
+			//대각선
+			if (present_index.first + 1 < _graph.size() && present_index.second + 1 < _graph.size())
+			{
+				if (_graph[present_index.second][present_index.first + 1] == 0
+					&& _graph[present_index.second + 1][present_index.first] == 0
+					&& _graph[present_index.second + 1][present_index.first + 1] == 0)
+
+					bfs_queue.push({ present_index.second + 1,present_index.first + 1, '/' });
+			}
+			break;
+		case 'l':
+			//세로방향
+			if (present_index.second + 1 < _graph.size() && _graph[present_index.second + 1][present_index.first] == 0)
+			{
+				bfs_queue.push({ present_index.second + 1,present_index.first, 'l' });
+			}
+			//대각선
+			if (present_index.first + 1 < _graph.size() && present_index.second + 1 < _graph.size())
+			{
+				if (_graph[present_index.second][present_index.first + 1] == 0
+					&& _graph[present_index.second + 1][present_index.first] == 0
+					&& _graph[present_index.second + 1][present_index.first + 1] == 0)
+
+					bfs_queue.push({ present_index.second + 1,present_index.first + 1, '/' });
+			}
+			break;
+
+		case '/':
+			//가로방향
+			if (present_index.first + 1 < _graph.size() && _graph[present_index.second][present_index.first + 1] == 0)
+			{
+				bfs_queue.push({ present_index.second ,present_index.first + 1, '-' });
+			}
+			//세로방향
+			if (present_index.second + 1 < _graph.size() && _graph[present_index.second + 1][present_index.first] == 0)
+			{
+				bfs_queue.push({ present_index.second + 1,present_index.first, 'l' });
+			}
+			//대각선
+			if (present_index.first + 1 < _graph.size() && present_index.second + 1 < _graph.size())
+			{
+				if (_graph[present_index.second][present_index.first + 1] == 0
+					&& _graph[present_index.second + 1][present_index.first] == 0
+					&& _graph[present_index.second + 1][present_index.first + 1] == 0)
+
+					bfs_queue.push({ present_index.second + 1,present_index.first + 1, '/' });
+			}
+			break;
+		}
+	}
+
+	return count;
+
+}
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<vector<int>> graph(N + 1, vector<int>(N + 1)); 
+
+	//그래프 작성
+	for (int y = 1; y <= N; y++)
+	{
+		for (int x = 1; x <= N; x++)
+		{
+			cin >> graph[y][x];
+		}
+	}
+
+	cout << bfs(graph, { 1,2,'-' }); // 1행 2열에서 가로방향으로 시작
+}
