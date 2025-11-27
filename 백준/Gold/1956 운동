@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+void init_dp_table(vector<vector<long long>>& _dp_table, int _reat_num)
+{
+	for (int num = 0; num < _reat_num; num++)
+	{
+		int start, end, value;
+		cin >> start >> end >> value;
+
+		_dp_table[start][end] = value;
+	}
+}
+
+void operation_dp(vector<vector<long long>>& _dp_table) // dp 채우기
+{
+	int dp_size = _dp_table.size();
+	for (int num = 1; num < dp_size; num++)
+	{
+		for (int y = 1; y < dp_size; y++)
+		{
+			for (int x = 1; x < dp_size; x++)
+			{
+
+				_dp_table[y][x] = min(_dp_table[y][x], _dp_table[y][num] + _dp_table[num][x]);
+			}
+		}
+	}
+}
+
+int find_minDist(vector<vector<long long>>& _dp_table)
+{
+	int dp_size = _dp_table.size() - 1;
+	long long min_dist = 1600000000;
+	for (int y = 1; y <= dp_size; y++)
+	{
+		for (int x = 1; x <= dp_size; x++)
+		{
+			min_dist = min(min_dist, _dp_table[y][x] + _dp_table[x][y]);
+		}
+	}
+
+	return min_dist;
+}
+
+int main()
+{
+	int V, E;
+	cin >> V >> E;
+
+	vector<vector<long long>> dp_table(V + 1, vector<long long>(V + 1, 1600000000));
+
+	//dp테이블 초기화
+	init_dp_table(dp_table, E);
+	//dp식 실행
+	operation_dp(dp_table);
+
+	int min_dist = find_minDist(dp_table);
+	
+	if (min_dist == 1600000000)
+	{
+		cout << -1;
+	}
+	else
+	{
+		cout << min_dist;
+	}
+}
