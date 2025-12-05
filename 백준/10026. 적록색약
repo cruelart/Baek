@@ -1,0 +1,117 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void dfs(vector<vector<char>>& _graph, vector<vector<bool>>& _isVisit, pair<int,int> _start_index)
+{
+	int y = _start_index.first;
+	int x = _start_index.second;
+
+	//상하좌우
+	if (y - 1 >= 0) // 상
+	{
+		if (!_isVisit[y - 1][x])
+		{
+			if (_graph[y][x] == _graph[y - 1][x])
+			{
+				_isVisit[y - 1][x] = true;
+				dfs(_graph, _isVisit, { y - 1, x });
+			}
+		}
+	}
+	if (y + 1 <= _graph.size() - 1) // 하
+	{
+		if (!_isVisit[y + 1][x])
+		{
+			if (_graph[y][x] == _graph[y + 1][x])
+			{
+				_isVisit[y + 1][x] = true;
+				dfs(_graph, _isVisit, { y + 1, x });
+			}
+		}
+	}
+	if (x - 1 >= 0) // 좌
+	{
+		if (!_isVisit[y][x - 1])
+		{
+			if (_graph[y][x] == _graph[y][x - 1])
+			{
+				_isVisit[y][x - 1] = true;
+				dfs(_graph, _isVisit, { y, x - 1 });
+			}
+		}
+	}
+	if (x + 1 <= _graph.size() - 1) // 우
+	{
+		if (!_isVisit[y][x + 1])
+		{
+			if (_graph[y][x] == _graph[y][x + 1])
+			{
+				_isVisit[y][x + 1] = true;
+				dfs(_graph, _isVisit, { y, x + 1 });
+			}
+		}
+	}
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
+	int N; // 칸의 수
+	cin >> N;
+
+	vector<vector<char>> no_RGgraph(N, vector<char>(N)); // N x N 색약 그래프
+	vector<vector<bool>> isVisit_noRGgraph(N, vector<bool>(N, false));
+
+	vector<vector<char>> do_RGgraph(N, vector<char>(N)); // N x N 색약 아닌 그래프
+	vector<vector<bool>> isVisit_doRGgraph(N, vector<bool>(N, false));
+
+
+	for (int y = 0; y < N; y++)
+	{
+		for (int x = 0; x < N; x++)
+		{
+			char ch;
+			cin >> ch;
+
+			do_RGgraph[y][x] = ch;
+
+			if (ch == 'G')
+			{
+				no_RGgraph[y][x] = 'R';
+			}
+			else { no_RGgraph[y][x] = ch; }
+		}
+	}
+
+	int noRGcount = 0;
+	int doRGcount = 0;
+
+	for (int y = 0; y < N; y++)
+	{
+		for (int x = 0; x < N; x++)
+		{
+			if (!isVisit_doRGgraph[y][x])
+			{
+				isVisit_doRGgraph[y][x] = true;
+				doRGcount++;
+				dfs(do_RGgraph, isVisit_doRGgraph, { y,x });
+			}
+
+			if (!isVisit_noRGgraph[y][x])
+			{
+				isVisit_noRGgraph[y][x] = true;
+				noRGcount++;
+				dfs(no_RGgraph, isVisit_noRGgraph, {y,x});
+			}
+
+		}
+	}
+
+	cout << doRGcount << " " << noRGcount;
+
+	return 0;
+}
