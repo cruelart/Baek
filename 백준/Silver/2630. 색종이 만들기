@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int white_num = 0;
+int blue_num = 0;
+
+void div(vector<vector<int>>& _graph, pair<int,int> _start_index, int _n)
+{
+	int start_y = _start_index.first;
+	int start_x = _start_index.second;
+
+	int color = _graph[start_y][start_x]; // 기준 색깔
+
+	for (int y = start_y; y < start_y + _n; y++)
+	{
+		for (int x = start_x; x < start_x + _n; x++)
+		{
+			if (color != _graph[y][x])
+			{
+				div(_graph, { start_y,start_x }, _n / 2);
+				div(_graph, { start_y + _n/2, start_x }, _n / 2);
+				div(_graph, { start_y, start_x + _n/2 }, _n / 2);
+				div(_graph, { start_y + _n/2 , start_x + _n/2 }, _n / 2);
+				return;
+			}
+		}
+	}
+
+	if (color == 0)
+	{
+		white_num++;
+	}
+	else
+	{
+		blue_num++;
+	}
+}
+
+int main()
+{
+	int N;
+	cin >> N; // 최대 128
+
+	vector<vector<int>> graph(N, vector<int>(N));
+
+	//그래프 작성
+	for (int y = 0; y < N; y++)
+	{
+		for (int x = 0; x < N; x++)
+		{
+			cin >> graph[y][x];
+		}
+	}
+
+	div(graph, { 0,0 }, N);
+
+	cout << white_num << '\n';
+	cout << blue_num; 
+
+	return 0;
+}
