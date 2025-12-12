@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int num_plus1 = 0;
+int num_minus1 = 0;
+int num_zero = 0;
+
+void div(vector<vector<int>>& _graph, pair<int,int> _start_index, int _N)
+{
+	int y = _start_index.first;
+	int x = _start_index.second;
+
+	int standard_num = _graph[y][x];
+
+	for (int r = y; r < y + _N; r++)
+	{
+		for (int c = x; c < x + _N; c++)
+		{
+			if (_graph[r][c] != standard_num)
+			{
+				//9 분할
+				for (int i = 0; i < 9; i++)
+				{
+					int k = i / 3;
+					int j = i % 3;
+					int plus_y = (_N / 3) * (k);
+					int plus_x = (_N / 3) * (j);
+					div(_graph, { y + plus_y, x + plus_x }, _N / 3);
+				}
+				return;
+			}
+		}
+	}
+	if (standard_num == -1)
+	{
+		num_minus1++;
+	}
+	else if (standard_num == 0)
+	{
+		num_zero++;
+	}
+	else
+	{
+		num_plus1++;
+	}
+}
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<vector<int>> graph(N, vector<int>(N));
+
+	for (int y = 0; y < N; y++)
+	{
+		for (int x = 0; x < N; x++)
+		{
+			cin >> graph[y][x];
+		}
+	}
+
+	div(graph, {0,0}, N);
+
+	cout << num_minus1 << '\n';
+	cout << num_zero << '\n';
+	cout << num_plus1 << '\n';
+	return 0;
+}
