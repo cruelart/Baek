@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+bool isStop = false;
+
+int Z(pair<int, int> _start_index, int _r, int _c, int _N)
+{
+	int y = _start_index.first;
+	int x = _start_index.second;
+
+	if (_r >= y && _r < y + _N / 2)
+	{
+		if (_c >= x && _c < x + _N / 2)
+		{
+			return Z({ y, x }, _r, _c, _N / 2);
+		}
+		else if (_c >= x + _N/2 && _c < x + _N)
+		{
+			return _N / 2 * _N / 2 + Z({ y, x + _N / 2 }, _r, _c, _N / 2);
+		}
+	}
+	else if (_r >= y + _N / 2 && _r < y + _N)
+	{
+		if (_c >= x && _c < x + _N / 2)
+		{
+			return _N / 2 * _N / 2 * 2 + Z({ y + _N / 2, x }, _r, _c, _N / 2);
+		}
+		else if (_c >= x + _N / 2 && _c < x + _N)
+		{
+			return _N / 2 * _N / 2 * 3 + Z({ y + _N / 2, x + _N / 2 }, _r, _c, _N / 2);
+		}
+	}
+	else
+	{
+		return 0;
+	}
+	return 0;
+	
+}
+
+int main()
+{
+	int N, r, c;
+	cin >> N >> r >> c;
+
+	int size = 1 << N;
+
+	Z( { 0,0 }, r, c, size);
+
+	cout << Z({ 0,0 }, r, c, size);
+
+	return 0;
+}
