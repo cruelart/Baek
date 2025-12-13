@@ -1,0 +1,31 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	int N, K;
+	cin >> N >> K;
+
+	vector<int> coin_value(N);
+	int coin_num = 0;
+
+	for (int n = 0; n < N; n++)
+	{
+		cin >> coin_value[n];
+	}
+
+	sort(coin_value.begin(), coin_value.end(), greater<int>());
+
+	for (int index = 0; index < N; index++)
+	{
+		coin_num += K / coin_value[index];
+		K -= (K / coin_value[index]) * coin_value[index];
+	}
+
+	cout << coin_num;
+
+	return 0;
+}
