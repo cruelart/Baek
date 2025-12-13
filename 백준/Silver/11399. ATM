@@ -1,0 +1,40 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<int> time;
+
+	for (int n = 0; n < N; n++)
+	{
+		int t;
+		cin >> t;
+		time.push_back(t);
+	}
+
+	sort(time.begin(), time.end());
+
+	vector<int> time_arr(N);
+	if (!time.empty())
+	{
+		time_arr[0] = time[0];
+	}
+
+	int total_time = time[0];
+
+	for (int i = 1; i < N; i++)
+	{
+		time_arr[i] = time[i] + time_arr[i - 1];
+		total_time += time_arr[i];
+	}
+
+	cout << total_time;
+
+	return 0;
+}
