@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<pair<int, int>> place(N); // 끝시간, 시작시간
+
+	for (int n = 0; n < N; n++)
+	{
+		cin >> place[n].second >> place[n].first;
+	}
+
+	sort(place.begin(), place.end());
+
+	int class_num = 0;
+	int end_time = 0;
+
+	if (!place.empty())
+	{
+		end_time = place[0].first;
+		class_num += 1;
+	}
+
+	for (int n = 1; n < N; n++)
+	{
+		if (place[n].second >= end_time)
+		{
+			end_time = place[n].first;
+			class_num += 1;
+		}
+	}
+
+	cout << class_num;
+	
+	return 0;
+}
