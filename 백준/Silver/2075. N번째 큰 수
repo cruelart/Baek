@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
+	int N;
+	cin >> N;
+	
+	vector<vector<int>> graph(N, vector<int>(N)); // -> 최대 9바이트
+	priority_queue<int, vector<int>, greater<int>> p_queue;
+
+	for (int y = 0; y < N; y++)
+	{
+		for (int x = 0; x < N; x++)
+		{
+			cin >> graph[y][x];
+			p_queue.push(graph[y][x]);
+
+			if (p_queue.size() > N)
+			{
+				p_queue.pop();
+			}
+		}
+	}
+
+	cout << p_queue.top();
+
+
+	return 0;
+}
