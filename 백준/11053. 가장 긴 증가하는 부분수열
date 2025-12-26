@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<int> sequence(N);
+
+	for (int n = 0; n < N; n++)
+	{
+		cin >> sequence[n];
+	}
+
+	//10 20 11 12 13
+	vector<int> dp_table(N, 1);
+
+	for (int i = 1; i < N; i++) // 끝점
+	{
+		for (int j = 0; j < i; j++) // 시작점
+		{
+			if (sequence[i] > sequence[j])
+			{
+				dp_table[i] = max(dp_table[i], dp_table[j] + 1);
+			}
+		}
+	}
+
+	cout << *max_element(dp_table.begin(), dp_table.end());
+
+	return 0;
+}
