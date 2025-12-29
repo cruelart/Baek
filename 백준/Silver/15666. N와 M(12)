@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <unordered_set>
+
+using namespace std;
+
+//1 7 9 9 (2개)
+void dfs(vector<int>& _sequence,  vector<int>& _save_arr, const int& _M, int _depth)
+{
+	int size = _sequence.size();
+
+	if (_depth == _M) // 
+	{
+		for (int i = 0; i < _save_arr.size(); i++)
+		{
+			cout << _save_arr[i] << ' ';
+		}
+		cout << '\n';
+		return;
+	}
+
+	for (int index = 0; index < size; index++) // 모든 인덱스에 대한 부분 수열 구하는 용
+	{
+		if (_depth > 0 && _save_arr[_depth - 1] > _sequence[index]) // 이미 방문했던 것들은 생략한다
+		{
+			continue;
+		}
+
+		_save_arr[_depth] = _sequence[index];
+		dfs(_sequence,_save_arr, _M, _depth + 1);
+
+	}
+
+	return;
+}
+
+int main()
+{
+	int N, M;
+	cin >> N >> M;
+
+	vector<int> sequence;
+	vector<int> save_arr(M);
+	unordered_set<int> save_num;
+
+	//4 4 2
+	for (int n = 0; n < N; n++)
+	{
+		int num;
+		cin >> num;
+
+		if (save_num.find(num) == save_num.end())
+		{
+			sequence.push_back(num);
+			save_num.insert(num);
+		}
+	}
+
+	//2 4 4
+	sort(sequence.begin(), sequence.end()); // 오름차순 정렬
+
+	dfs(sequence,save_arr, M, 0);
+
+	return 0;
+}
