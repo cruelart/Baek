@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void dfs(vector<vector<int>>& _graph, vector<int>& _parent_node, int _index)
+{
+	for (int i = 0; i < _graph[_index].size(); i++)
+	{
+		if (_parent_node[_graph[_index][i]] == -1)
+		{
+			_parent_node[_graph[_index][i]] = _index;
+			dfs(_graph, _parent_node, _graph[_index][i]);
+		}
+	}
+
+	return;
+}
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<vector<int>> graph(N + 1);
+	vector<int> parent_node(N + 1, -1);
+	parent_node[1] = 0; // 루트 노드
+
+	for (int n = 0; n < N - 1; n++)
+	{
+		int num1, num2;
+		cin >> num1 >> num2;
+
+		graph[num1].push_back(num2);
+		graph[num2].push_back(num1);
+	}
+
+	dfs(graph, parent_node, 1);
+
+	for (int i = 2; i < N + 1; i++)
+	{
+		cout << parent_node[i] << '\n';
+	}
+
+	return 0;
+}
+
+//   1
+//  4  6
+// 2 7  3
+//        5
