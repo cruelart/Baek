@@ -1,0 +1,53 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int count_num = 0;
+
+bool col_check[15] = {};
+bool up_diagonal[30] = {};
+bool down_diagonal[30] = {};
+
+void dfs(int _map_size, int _row) // _row가 곧 depth 역할
+{
+
+	// 목표한 행 끝까지 도달했다면 성공
+	if (_row == _map_size)
+	{
+		count_num++;
+		return;
+	}
+
+	// 현재 행(_row)에서 어느 열(c)에 놓을지만 결정
+	for (int c = 0; c < _map_size; c++)
+	{
+		if (!col_check[c] && !up_diagonal[_row - c + (_map_size - 1)] && !down_diagonal[_row + c]) // 현재 행의 c열이 안전한가?
+		{
+			col_check[c] = true;
+			up_diagonal[_row - c + (_map_size - 1)] = true;
+			down_diagonal[_row + c] = true;
+
+			dfs(_map_size, _row + 1); // 다음 행으로 이동
+
+			col_check[c] = false;
+			up_diagonal[_row - c + (_map_size - 1)] = false;
+			down_diagonal[_row + c] = false;
+		}
+	}
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
+	int N;
+	cin >> N;
+
+	dfs(N, 0);
+
+	cout << count_num;
+
+	return 0;
+}
