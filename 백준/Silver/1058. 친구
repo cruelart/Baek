@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	int INF = 2501;
+	int max_num = 0;
+
+	vector<vector<int>> dp_table(N + 1, vector<int>(N + 1));
+
+	for (int r = 1; r <= N; r++)
+	{
+		for (int c = 1; c <= N; c++)
+		{
+			char ch;
+			cin >> ch;
+
+			if (ch == 'N')
+			{
+				dp_table[r][c] = INF;
+			}
+			else if (ch == 'Y')
+			{
+				dp_table[r][c] = 1;
+			}
+		}
+	}
+
+	for (int i = 1; i <= N; i++) // 모든 사람 방문
+	{
+		for (int r = 1; r <= N; r++)
+		{
+			for (int c = 1; c <= N; c++)
+			{
+				dp_table[r][c] = min(dp_table[r][c], dp_table[r][i] + dp_table[i][c]);
+			}
+		}
+	}
+
+	vector<int> minus2FrinedNum(N + 1, 0);
+	for (int r = 1; r <= N; r++)
+	{
+		for (int c = 1; c <= N; c++)
+		{
+			if (dp_table[r][c] <= 2 && r != c)
+			{
+				minus2FrinedNum[r]++;
+			}
+		}
+	}
+
+	cout << *max_element(minus2FrinedNum.begin(), minus2FrinedNum.end());
+
+	return 0;
+}
