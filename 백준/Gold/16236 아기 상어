@@ -1,0 +1,149 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <tuple>
+#include <algorithm>
+
+using namespace std;
+
+void vectorClear(vector<vector<bool>>& _vector)
+{
+	int size = _vector.size();
+
+	for (int r = 0; r < size; r++)
+	{
+		for (int c = 0; c < size; c++)
+		{
+			_vector[r][c] = false;
+		}
+	}
+}
+
+bool bfs(vector<vector<int>>& _graph, vector<vector<bool>>& _isVisit, pair<int,int>& _shark_pos, pair<int,int>& _sharkSize, int& _time) // sharkSize -> 1. 크기 2. 먹은 양
+{
+	queue<tuple<int, int, int>> bfs_queue;
+
+	int shark_r = _shark_pos.first;
+	int shark_c = _shark_pos.second;
+	int size = _graph.size();
+
+	bfs_queue.push({ shark_r, shark_c, 0 });
+
+	_isVisit[shark_r][shark_c] = true;
+	vector<pair<int, int>> possible_eatingArr;
+
+	int y[4] = { -1, 0, 1, 0 };
+	int x[4] = { 0, -1, 0, 1 };
+
+	bool isFind_eat = false;
+	int move_t = -1;
+
+	while (!bfs_queue.empty())
+	{
+		tuple<int,int,int> present_index = bfs_queue.front();
+		bfs_queue.pop();
+
+		int r = get<0>(present_index);
+		int c = get<1>(present_index);
+		int move_time = get<2>(present_index);
+
+		if (_graph[r][c] > 0 && _graph[r][c] != 9) // 물고기가 있는데 (상어가 아니고)
+		{
+			if (_graph[r][c] < _sharkSize.first) // 상어보다 작으면
+			{
+				if (move_t == -1)
+				{
+					isFind_eat = true;
+					move_t = move_time;
+					possible_eatingArr.push_back({ r,c });
+					continue;
+				}
+				
+				if (move_t == move_time)
+				{
+					possible_eatingArr.push_back({ r,c });
+					sort(possible_eatingArr.begin(), possible_eatingArr.end());
+				}
+			}
+		}
+
+		if (!isFind_eat)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				if (r + y[i] >= 0 && r + y[i] < size)
+				{
+					if (c + x[i] >= 0 && c + x[i] < size)
+					{
+						if (!_isVisit[r + y[i]][c + x[i]] && _graph[r + y[i]][c + x[i]] <= _sharkSize.first)
+						{
+							_isVisit[r + y[i]][c + x[i]] = true;
+							bfs_queue.push({ r + y[i], c + x[i], move_time + 1 });
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if (isFind_eat)
+	{
+		_shark_pos = possible_eatingArr[0];
+
+		_sharkSize.second += 1;
+		if (_sharkSize.second == _sharkSize.first)
+		{
+			_sharkSize.first++;
+			_sharkSize.second = 0;
+		}
+		_graph[possible_eatingArr[0].first][possible_eatingArr[0].second] = 0; //물고기 먹으면 사라짐
+		_graph[shark_r][shark_c] = 0;
+		_graph[_shark_pos.first][_shark_pos.second] = 9;
+		_time += move_t;
+		return true;
+	}
+
+	return false;
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
+	int N;
+	cin >> N;
+
+	vector<vector<int>> graph(N, vector<int>(N));
+	vector<vector<bool>> isVisit(N, vector<bool>(N, false));
+
+	pair<int, int> shark_pos;
+	pair<int, int> shark_size = { 2,0 }; // 크기, 경험치
+	int time = 0;
+
+	for (int r = 0; r < N; r++)
+	{
+		for (int c = 0; c < N; c++)
+		{
+			cin >> graph[r][c];
+			if (graph[r][c] == 9)
+			{
+				shark_pos = { r,c };
+			}
+		}
+	}
+
+	while (true)
+	{
+		if (!bfs(graph, isVisit, shark_pos, shark_size, time))
+		{
+			break;
+		}
+		vectorClear(isVisit);
+	}
+	
+	cout << time;
+
+	return 0;
+
+}
