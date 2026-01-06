@@ -1,0 +1,85 @@
+#include<iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	priority_queue<int> plus_sequence;
+	priority_queue<int, vector<int>, greater<>> minus_sequence;
+
+	long long result = 0;
+
+	bool isHaveZero = false;
+	int one_num = 0;
+
+	for (int n = 0; n < N; n++)
+	{
+		int num;
+		cin >> num;
+
+		if (num > 1)
+		{
+			plus_sequence.push(num);
+		}
+		else if (num < 0)
+		{
+			minus_sequence.push(num);
+		}
+		else if(num == 0)
+		{
+			isHaveZero = true;
+		}
+		else
+		{
+			one_num++;
+		}
+	}
+
+	while (plus_sequence.size() > 1)
+	{
+		int num1 = plus_sequence.top();
+		plus_sequence.pop();
+
+		int num2 = plus_sequence.top();
+		plus_sequence.pop();
+
+		result += (num1 * num2);
+	}
+
+	while (minus_sequence.size() > 1)
+	{
+		int num1 = minus_sequence.top();
+		minus_sequence.pop();
+
+		int num2 = minus_sequence.top();
+		minus_sequence.pop();
+
+		result += (num1 * num2);
+	}
+
+	// 마이너스요소가 남아잇다면
+	if (minus_sequence.size() == 1)
+	{
+		if (!isHaveZero) // 마이너스 요소를 0이랑 곱할 수 없으므로
+		{
+			result += minus_sequence.top();
+		}
+	}
+
+	if (plus_sequence.size() == 1)
+	{
+		result += plus_sequence.top();
+	}
+
+	result += one_num;
+
+	cout << result;
+
+	return 0;
+}
