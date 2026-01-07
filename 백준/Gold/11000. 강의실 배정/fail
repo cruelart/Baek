@@ -1,0 +1,68 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	int N;
+	cin >> N;
+
+	vector<pair<long long, long long>> end_start(N);
+
+	for (int n = 0; n < N; n++)
+	{
+		cin >> end_start[n].second >> end_start[n].first;
+	}
+
+	sort(end_start.begin(), end_start.end()); //오름차순으로 정렬
+
+	priority_queue<long long, vector<long long>, greater<>> end_queue;
+
+	end_queue.push(end_start[0].first);
+
+
+	for (int n = 1; n < N; n++)
+	{
+		long long end_time = end_queue.top();
+
+		if (end_start[n].second >= end_time)
+		{
+			end_time = end_start[n].first;
+			end_queue.pop();
+			end_queue.push(end_time);
+		}
+		else // 
+		{
+			end_queue.push(end_start[n].first);
+		}
+	}
+
+	cout << end_queue.size();
+
+	return 0;
+}
+
+//3
+//1 2
+//1 3
+//1 4
+//2 4
+//3 5
+
+//나만의 기준을 세워야한다
+
+//-> 최소한의 강의실을 만들라면 한 강의실에 최대한 많은 수업을 떄려박아야됨
+
+//-> 겹치면 일단 한 강의실에 들어갈 수 없으니 분리를 시킨다.
+
+//알고있는 정보는 시작시간, 끝 시간, 총 강의 시간 3가지의 정보
+//-> 여기서 뭘 기준으로 채울것이냐
+
+//시작시간 기준으로
+//-> 
+
+//끝 시간을 기준으로하면
+//-> 
