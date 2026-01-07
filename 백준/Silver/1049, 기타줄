@@ -1,0 +1,34 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	int N, M; // 끊어진 기타줄, 브랜드 갯수
+	cin >> N >> M;
+
+	int min_pakagePrice = 1001;
+	int min_onePrice = 1001;
+
+	for (int m = 0; m < M; m++)
+	{
+		pair<int, int> price; // 패키지가격, 낱개 가격
+		cin >> price.first >> price.second;
+
+		min_pakagePrice = min(min_pakagePrice, price.first);
+		min_onePrice = min(min_onePrice, price.second);
+	}
+
+	min_pakagePrice = min(min_pakagePrice, min_onePrice * 6);
+
+	if (min_pakagePrice * (N / 6) + min_onePrice * (N % 6) > min_pakagePrice * (N / 6) + min_pakagePrice)
+	{
+		cout << min_pakagePrice * (N / 6) + min_pakagePrice;
+		return 0;
+	}
+
+	cout << min_pakagePrice * (N / 6) + min_onePrice * (N % 6);
+	return 0;
+}
