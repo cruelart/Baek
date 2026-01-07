@@ -1,0 +1,49 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
+	int N;
+	cin >> N;
+
+	vector<pair<long long, long long>> start_end(N);
+
+	for (int n = 0; n < N; n++)
+	{
+		cin >> start_end[n].first >> start_end[n].second;
+	}
+
+	sort(start_end.begin(), start_end.end()); //오름차순으로 정렬
+
+	priority_queue<long long, vector<long long>, greater<>> end_queue;
+
+	end_queue.push(start_end[0].second);
+
+
+	for (int n = 1; n < N; n++)
+	{
+		long long end_time = end_queue.top();
+
+		if (start_end[n].first >= end_time)
+		{
+			end_time = start_end[n].second;
+			end_queue.pop();
+			end_queue.push(end_time);
+		}
+		else // 겹친다면
+		{
+			end_queue.push(start_end[n].second);
+		}
+	}
+
+	cout << end_queue.size();
+
+	return 0;
+	}
