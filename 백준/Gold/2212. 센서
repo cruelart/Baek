@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	int N; //센서의 갯수
+	cin >> N;
+
+	int K;
+	cin >> K; // 집중국의 갯수
+	
+	vector<int> sensor_pos(N);
+
+	for (int n = 0; n < N; n++)
+	{
+		cin >> sensor_pos[n];
+	}
+
+	sort(sensor_pos.begin(), sensor_pos.end()); // 작은 순서대로 정렬
+
+	vector<int> sensor_dist(N - 1); // 센서끼리의 거리 
+
+	for (int n = 0; n < N - 1; n++)
+	{
+		sensor_dist[n] = sensor_pos[n + 1] - sensor_pos[n];
+	}
+	
+	sort(sensor_dist.begin(), sensor_dist.end());
+
+	int result = 0;
+
+	for (int i = 0; i < (N -1) - (K - 1); i++)
+	{
+		result += sensor_dist[i];
+	}
+	
+	cout << result;
+
+	return 0;
+}
+
+// 1 3 6 6 7 9 좌표
+//-> 2 3 0 1 2 
+//결과는 1~3, 6-9가 나와야함
+//-> max는 3 3기준으로 나누기
+// 
+//3 6 7 8 10 12 14 15 18 20
+// 1 1 2 2  1  
