@@ -1,0 +1,32 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
+	int N, M;
+	cin >> N >> M;
+
+	vector<int> num_arr(N + 1);
+	vector<int> dp_table(N + 1, 0);
+	
+	for (int i = 1; i <= N; i++)
+	{
+		cin >> num_arr[i];
+		dp_table[i] = dp_table[i - 1] + num_arr[i];
+	}
+
+	for (int m = 0; m < M; m++)
+	{
+		int i, j;
+		cin >> i >> j;
+
+		cout << dp_table[j] - dp_table[i - 1] << '\n';
+	}
+
+	return 0;
+}
