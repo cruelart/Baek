@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	int n;
+	cin >> n;
+
+	if (n == 1)
+	{
+		cout << 1;
+		return 0;
+	}
+	
+	vector<long long> dp_table(n + 1, 0);
+	dp_table[1] = 1;
+	dp_table[2] = 2;
+
+	for (int i = 3; i <= n; i++)
+	{
+		dp_table[i] = (dp_table[i - 1] + dp_table[i - 2]) % 10007;
+	}
+
+	cout << dp_table[n];
+
+	//세로로 세우면 깔끔
+	//가로로 세우면 무조건 2개채워야함
+
+	return 0;
+}
