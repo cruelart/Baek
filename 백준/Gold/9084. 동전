@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void coin_baekjoon()
+{
+    int N;
+    cin >> N;
+
+    vector<int> coin_value(N);
+    for (int i = 0; i < N; i++)
+        cin >> coin_value[i];
+
+    int M;
+    cin >> M;
+
+    vector<unsigned int> dp(M + 1, 0);
+    dp[0] = 1; // ★ 핵심
+
+    for (int coin : coin_value)
+    {
+        for (int m = coin; m <= M; m++)
+        {
+            dp[m] += dp[m - coin];
+        }
+    }
+
+    cout << dp[M] << '\n';
+}
+
+int main()
+{
+    int T;
+    cin >> T;
+
+    while (T--)
+        coin_baekjoon();
+}
