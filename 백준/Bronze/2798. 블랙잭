@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	int N, M;
+	cin >> N >> M;
+
+	vector<int> card_num(N);
+	for (int n = 0; n < N; n++)
+	{
+		cin >> card_num[n];
+	}
+
+	int max_num = 0;
+
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = i + 1; j < N; j++)
+		{
+			for (int k = j + 1; k < N; k++)
+			{
+				if (card_num[i] + card_num[j] + card_num[k] <= M)
+				{
+					max_num = max(max_num,card_num[i] + card_num[j] + card_num[k]);
+				}
+			}
+		}
+	}
+
+	cout << max_num;
+
+	return 0;
+}
